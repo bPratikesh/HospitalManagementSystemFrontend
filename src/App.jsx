@@ -1,14 +1,9 @@
 import { useState } from "react";
 import "./index.css";
+import AppRoutes from "./routes/AppROutes";
 
 function App() {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-100">
-      <h1 className="text-5xl font-bold text-blue-600">
-        Doctor Patient Management System
-      </h1>
-    </div>
-  );
+  return <AppRoutes />;
 }
 
 export default App;
