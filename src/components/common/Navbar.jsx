@@ -1,46 +1,46 @@
-import { Link } from "react-router-dom";
-import { Stethoscope } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
-import useAuth from "@/hooks/useAuth";
+import { Link, useNavigate } from "react-router-dom";
+import { Stethoscope, User } from "lucide-react";
 
 import {
-  guestLinks,
-  doctorLinks,
-  patientLinks,
-} from "@/utils/navLinks";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+import { Button } from "@/components/ui/button";
+
+import useAuth from "@/hooks/useAuth";
+
+import { removeUser } from "@/utils/storage";
+
+import { guestLinks, doctorLinks, patientLinks } from "@/utils/navLinks";
 
 function Navbar() {
-  const {
-    user: currentUser,
-    role,
-    isAuthenticated,
-  } = useAuth();
+  const { user: currentUser, role, isAuthenticated } = useAuth();
 
   // Decide which navigation links to display
   const navLinks =
     role === "DOCTOR"
       ? doctorLinks
       : role === "PATIENT"
-      ? patientLinks
-      : guestLinks;
+        ? patientLinks
+        : guestLinks;
+
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    removeUser();
+    window.location.href = "/";
+  };
 
   return (
     <header className="sticky top-0 z-50 border-b bg-white shadow-sm">
       <div className="container flex h-16 items-center justify-between">
         {/* Logo */}
-        <Link
-          to="/"
-          className="flex items-center gap-2"
-        >
-          <Stethoscope
-            size={30}
-            className="text-blue-600"
-          />
+        <Link to="/" className="flex items-center gap-2">
+          <Stethoscope size={30} className="text-blue-600" />
 
-          <span className="text-2xl font-bold text-slate-800">
-            DocCare
-          </span>
+          <span className="text-2xl font-bold text-slate-800">DocCare</span>
         </Link>
 
         {/* Navigation Links */}
@@ -59,26 +59,30 @@ function Navbar() {
         {/* Right Section */}
         {isAuthenticated ? (
           <div className="flex items-center gap-3">
-            <span className="font-medium text-slate-700">
-              {currentUser.name}
-            </span>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="flex items-center gap-2">
+                  <User size={18} />
 
-            <Button variant="outline">
-              Logout
-            </Button>
+                  <span>{currentUser.name}</span>
+                </Button>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={handleLogout}>
+                  Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         ) : (
           <div className="flex items-center gap-3">
             <Link to="/login">
-              <Button variant="outline">
-                Login
-              </Button>
+              <Button variant="outline">Login</Button>
             </Link>
 
             <Link to="/register">
-              <Button>
-                Register
-              </Button>
+              <Button>Register</Button>
             </Link>
           </div>
         )}

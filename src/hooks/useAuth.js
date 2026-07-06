@@ -1,9 +1,7 @@
-function useAuth() {
-  // Temporary user (will come from localStorage after login)
-  const user = null;
+import { getUser } from "@/utils/storage";
 
-  //after implementing loginAPI
-  //const user = JSON.parse(localStorage.getItem("user"));
+function useAuth() {
+  const user = getUser();
 
   return {
     user,
