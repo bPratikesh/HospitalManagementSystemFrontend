@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { formatDate, formatTime } from "@/utils/dateUtils";
 
 function RecentAppointments({ appointments }) {
   return (
@@ -8,50 +9,58 @@ function RecentAppointments({ appointments }) {
       </CardHeader>
 
       <CardContent>
-        <div className="overflow-x-auto">
-          <table className="w-full text-left">
-            <thead className="border-b">
-              <tr>
-                <th className="py-3">Patient</th>
-                <th className="py-3">Date</th>
-                <th className="py-3">Time</th>
-                <th className="py-3">Status</th>
-              </tr>
-            </thead>
+        {appointments.length === 0 ? (
+          <p className="text-center text-slate-500 py-8">
+            No appointments found.
+          </p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+              <thead className="border-b">
+                <tr>
+                  <th className="py-3">Patient</th>
+                  <th className="py-3">Symptoms</th>
+                  <th className="py-3">Date</th>
+                  <th className="py-3">Time</th>
+                  <th className="py-3">Status</th>
+                </tr>
+              </thead>
 
-            <tbody>
-              {appointments.map((appointment) => (
-                <tr
-                  key={appointment.id}
-                  className="border-b last:border-none hover:bg-slate-50"
-                >
-                  <td className="py-4 font-medium">
-                    {appointment.patientName}
-                  </td>
+              <tbody>
+                {appointments.map((appointment) => (
+                  <tr
+                    key={appointment.id}
+                    className="border-b last:border-none hover:bg-slate-50"
+                  >
+                    <td className="py-4 font-medium">
+                      {appointment.patient.user.name}
+                    </td>
 
-                  <td>{appointment.date}</td>
+                    <td>{appointment.symptoms}</td>
 
-                  <td>{appointment.time}</td>
+                    <td>{formatDate(appointment.time)}</td>
 
-                  <td>
-                    <span
-                      className={`rounded-full px-3 py-1 text-xs font-semibold
-                        ${
-                          appointment.status === "Upcoming"
+                    <td>{formatTime(appointment.time)}</td>
+
+                    <td>
+                      <span
+                        className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                          appointment.status === "BOOKED"
                             ? "bg-blue-100 text-blue-700"
-                            : appointment.status === "Completed"
+                            : appointment.status === "COMPLETED"
                               ? "bg-green-100 text-green-700"
                               : "bg-red-100 text-red-700"
                         }`}
-                    >
-                      {appointment.status}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                      >
+                        {appointment.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

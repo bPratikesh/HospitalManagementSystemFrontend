@@ -1,4 +1,4 @@
-import api from "@/api/api";
+import api from "./api";
 
 const createAppointment = async (patientId, doctorId, appointmentData) => {
   const response = await api.post(
@@ -22,8 +22,20 @@ const cancelAppointment = async (appointmentId) => {
   return response.data;
 };
 
+const getAppointmentsByDoctor = async (doctorId) => {
+  const response = await api.get(`/appointment/doctor/${doctorId}`);
+  return response.data;
+};
+
+const cancelAppointmentByDoctor = async (appointmentId) => {
+  const response = await api.put(`/appointment/doctor/cancel/${appointmentId}`);
+  return response.data;
+};
+
 export default {
   createAppointment,
   getAppointmentsByPatient,
   cancelAppointment,
+  getAppointmentsByDoctor,
+  cancelAppointmentByDoctor,
 };

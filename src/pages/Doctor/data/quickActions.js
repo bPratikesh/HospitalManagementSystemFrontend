@@ -13,12 +13,6 @@ const quickActions = [
     icon: User,
     path: "/doctor/profile",
   },
-  {
-    title: "Wallet",
-    description: "View wallet balance",
-    icon: Wallet,
-    path: "/doctor/wallet",
-  },
 ];
 
 export default quickActions;

@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom";
 
 import { Card, CardContent } from "@/components/ui/card";
-
 import AppointmentForm from "./components/AppointmentForm";
 
 function BookAppointment() {
@@ -15,7 +14,7 @@ function BookAppointment() {
             <h1 className="text-3xl font-bold">Book Appointment</h1>
 
             <p className="mt-2 text-slate-500">
-              Booking appointment with Doctor ID: {doctorId}
+              Please fill in the details below to book your appointment.
             </p>
           </div>
 

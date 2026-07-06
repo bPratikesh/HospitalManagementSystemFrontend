@@ -1,6 +1,21 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { formatDateTime } from "@/utils/dateUtils";
 
 function RecentAppointments({ appointments }) {
+  if (appointments.length === 0) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Recent Appointments</CardTitle>
+        </CardHeader>
+
+        <CardContent>
+          <p className="text-slate-500">No appointments found.</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -14,8 +29,7 @@ function RecentAppointments({ appointments }) {
               <tr>
                 <th className="py-3">Doctor</th>
                 <th className="py-3">Specialization</th>
-                <th className="py-3">Date</th>
-                <th className="py-3">Time</th>
+                <th className="py-3">Date & Time</th>
                 <th className="py-3">Status</th>
               </tr>
             </thead>
@@ -26,20 +40,20 @@ function RecentAppointments({ appointments }) {
                   key={appointment.id}
                   className="border-b last:border-none hover:bg-slate-50"
                 >
-                  <td className="py-4 font-medium">{appointment.doctorName}</td>
+                  <td className="py-4 font-medium">
+                    Dr. {appointment.doctor.doctorName}
+                  </td>
 
-                  <td>{appointment.specialization}</td>
+                  <td>{appointment.doctor.speciality}</td>
 
-                  <td>{appointment.date}</td>
-
-                  <td>{appointment.time}</td>
+                  <td>{formatDateTime(appointment.time)}</td>
 
                   <td>
                     <span
                       className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                        appointment.status === "Upcoming"
+                        appointment.status === "BOOKED"
                           ? "bg-blue-100 text-blue-700"
-                          : appointment.status === "Completed"
+                          : appointment.status === "COMPLETED"
                             ? "bg-green-100 text-green-700"
                             : "bg-red-100 text-red-700"
                       }`}

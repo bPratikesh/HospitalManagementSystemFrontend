@@ -14,18 +14,18 @@ function WalletCard({ balance }) {
             ₹ {balance}
           </h2>
 
-          <p className="mt-2 text-sm text-slate-500">
+          {/* <p className="mt-2 text-sm text-slate-500">
             Use your wallet to pay consultation fees.
-          </p>
+          </p> */}
         </div>
 
-        <div className="flex flex-col items-center gap-4">
+        {/* <div className="flex flex-col items-center gap-4">
           <div className="rounded-full bg-green-100 p-4 text-green-600">
             <Wallet size={34} />
           </div>
 
           <Button size="sm">Add Money</Button>
-        </div>
+        </div> */}
       </CardContent>
     </Card>
   );

@@ -12,7 +12,7 @@ function QuickActions({ actions }) {
           const Icon = action.icon;
 
           return (
-            <Link key={action.title} to={action.path} className="block w-100">
+            <Link key={action.title} to={action.path} className="block w-100 ">
               <Card className="min-h-20 cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
                 <CardContent className="flex flex-col items-center justify-center gap-4 p-8 text-center">
                   <div className="rounded-full bg-blue-100 p-4 text-blue-600">

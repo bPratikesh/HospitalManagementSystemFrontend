@@ -1,50 +1,64 @@
-import { Wallet, CalendarDays, Users } from "lucide-react";
+import { useEffect, useState } from "react";
 
 import useAuth from "@/hooks/useAuth";
 
 import WelcomeCard from "./components/WelcomeCard";
-import StatsCard from "./components/StatsCard";
 import QuickActions from "./components/QuickActions";
-import quickActions from "./data/quickActions";
 import RecentAppointments from "./components/RecentAppointments";
-import recentAppointments from "./data/recentAppointments";
+
+import quickActions from "./data/quickActions";
+
+import doctorService from "@/services/doctorService";
+import appointmentService from "@/services/appointmentService";
+import { getUser } from "@/utils/storage";
+import WalletCard from "../Patient/components/WalletCard";
 
 function Doctor() {
   const { user } = useAuth();
 
-  // Temporary dashboard data
-  const dashboardData = {
-    doctorName: user?.name ?? "Doctor",
-    walletBalance: 0,
-    totalAppointments: 0,
-    totalPatients: 0,
+  const [doctor, setDoctor] = useState(null);
+  const [appointments, setAppointments] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchDashboard();
+  }, []);
+
+  const fetchDashboard = async () => {
+    try {
+      const loggedInUser = getUser();
+
+      if (!loggedInUser) return;
+
+      const [doctorData, appointmentData] = await Promise.all([
+        doctorService.getDoctorById(loggedInUser.doctorId),
+        appointmentService.getAppointmentsByDoctor(loggedInUser.doctorId),
+      ]);
+
+      setDoctor(doctorData);
+      setAppointments(appointmentData);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   };
+
+  if (loading) {
+    return <div className="container py-10">Loading Dashboard...</div>;
+  }
 
   return (
     <div className="container space-y-10 py-10">
-      <WelcomeCard doctorName={dashboardData.doctorName} />
+      <WelcomeCard
+        doctorName={doctor?.user?.name ?? user?.name ?? "Doctor"}
+      />
+
       <QuickActions actions={quickActions} />
 
-      <section className="grid gap-6 md:grid-cols-3">
-        <StatsCard
-          title="Wallet Balance"
-          value={`₹ ${dashboardData.walletBalance}`}
-          icon={<Wallet size={28} />}
-        />
+      <WalletCard balance={doctor?.walletBalance ?? 0} />
 
-        <StatsCard
-          title="Appointments"
-          value={dashboardData.totalAppointments}
-          icon={<CalendarDays size={28} />}
-        />
-
-        <StatsCard
-          title="Patients"
-          value={dashboardData.totalPatients}
-          icon={<Users size={28} />}
-        />
-      </section>
-      <RecentAppointments appointments={recentAppointments} />
+      <RecentAppointments appointments={appointments} />
     </div>
   );
 }

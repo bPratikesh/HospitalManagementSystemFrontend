@@ -20,15 +20,17 @@ function AppointmentForm({ doctorId }) {
 
   const onSubmit = async (data) => {
     try {
-      const user = getUser();
+      const loggedInUser = getUser();
 
       const appointmentData = {
         symptoms: data.symptoms,
         time: `${data.date}T${data.time}:00`,
       };
 
+      console.log("Appointment Request:", appointmentData);
+
       await appointmentService.createAppointment(
-        user.patientId,
+        loggedInUser.patientId,
         doctorId,
         appointmentData,
       );
@@ -74,7 +76,7 @@ function AppointmentForm({ doctorId }) {
         <Input
           type="date"
           {...register("date", {
-            required: "Date is required",
+            required: "Appointment date is required",
           })}
         />
 
@@ -90,7 +92,7 @@ function AppointmentForm({ doctorId }) {
         <Input
           type="time"
           {...register("time", {
-            required: "Time is required",
+            required: "Appointment time is required",
           })}
         />
 
