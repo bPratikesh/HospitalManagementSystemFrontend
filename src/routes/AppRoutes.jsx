@@ -16,6 +16,10 @@ import BookAppointment from "@/pages/Patient/BookAppointment";
 import PatientAppointments from "@/pages/Patient/PatientAppointments";
 import DoctorAppointments from "@/pages/Doctor/DoctorAppointments";
 import PrescribePatient from "@/pages/Doctor/PrescribePatient";
+import PatientPrescription from "@/pages/Patient/PatientPrescription";
+import PatientAllPrescriptions from "@/pages/Patient/PatientAllPrescriptions";
+import PatientProfile from "@/pages/Patient/PatientProfile";
+import DoctorProfile from "@/pages/Doctor/DoctorProfile";
 
 function AppRoutes() {
   return (
@@ -80,6 +84,38 @@ function AppRoutes() {
           <Route
             path="/doctor/prescription/:appointmentId"
             element={<PrescribePatient />}
+          />
+          <Route
+            path="/patient/prescription/:appointmentId"
+            element={
+              <PatientRoute>
+                <PatientPrescription />
+              </PatientRoute>
+            }
+          />
+          <Route
+            path="/patient/prescriptions"
+            element={
+              <PatientRoute>
+                <PatientAllPrescriptions />
+              </PatientRoute>
+            }
+          />
+          <Route
+            path="/patient/profile"
+            element={
+              <PatientRoute>
+                <PatientProfile />
+              </PatientRoute>
+            }
+          />
+          <Route
+            path="/doctor/profile"
+            element={
+              <DoctorRoute>
+                <DoctorProfile />
+              </DoctorRoute>
+            }
           />
         </Route>
       </Routes>

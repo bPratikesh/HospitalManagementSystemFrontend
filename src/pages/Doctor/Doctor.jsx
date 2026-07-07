@@ -50,9 +50,7 @@ function Doctor() {
 
   return (
     <div className="container space-y-10 py-10">
-      <WelcomeCard
-        doctorName={doctor?.user?.name ?? user?.name ?? "Doctor"}
-      />
+      <WelcomeCard doctorName={doctor?.doctorName ?? user?.name ?? "Doctor"} />
 
       <QuickActions actions={quickActions} />
 

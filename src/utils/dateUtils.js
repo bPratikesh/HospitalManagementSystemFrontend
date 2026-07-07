@@ -1,16 +1,23 @@
 function parseDate(dateTime) {
   if (!dateTime) return null;
 
-  // Backend format:
+  // Appointment format:
   // dd-MM-yyyy HH:mm:ss
+  if (dateTime.includes(" ")) {
+    const [datePart, timePart] = dateTime.split(" ");
 
-  const [datePart, timePart] = dateTime.split(" ");
+    const [day, month, year] = datePart.split("-").map(Number);
 
-  const [day, month, year] = datePart.split("-").map(Number);
+    const [hour, minute, second] = timePart.split(":").map(Number);
 
-  const [hour, minute, second] = timePart.split(":").map(Number);
+    return new Date(year, month - 1, day, hour, minute, second);
+  }
 
-  return new Date(year, month - 1, day, hour, minute, second);
+  // Prescription format:
+  // yyyy-MM-dd
+  const [year, month, day] = dateTime.split("-").map(Number);
+
+  return new Date(year, month - 1, day);
 }
 
 export const formatDate = (dateTime) => {

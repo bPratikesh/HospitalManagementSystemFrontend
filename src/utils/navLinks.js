@@ -1,14 +1,14 @@
 export const guestLinks = [
-  {
-    title: "Home",
-    path: "/",
-  },
+  // {
+  //   title: "Home",
+  //   path: "/",
+  // },
 ];
 
 export const patientLinks = [
   {
     title: "Dashboard",
-    path: "/patient/dashboard",
+    path: "/patient",
   },
   {
     title: "Appointments",
@@ -18,27 +18,15 @@ export const patientLinks = [
     title: "Prescriptions",
     path: "/patient/prescriptions",
   },
-  {
-    title: "Wallet",
-    path: "/patient/wallet",
-  },
 ];
 
 export const doctorLinks = [
   {
     title: "Dashboard",
-    path: "/doctor/dashboard",
+    path: "/doctor",
   },
   {
     title: "Appointments",
     path: "/doctor/appointments",
-  },
-  {
-    title: "Patients",
-    path: "/doctor/patients",
-  },
-  {
-    title: "Wallet",
-    path: "/doctor/wallet",
   },
 ];

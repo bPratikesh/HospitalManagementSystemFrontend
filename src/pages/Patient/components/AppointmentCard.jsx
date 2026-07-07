@@ -1,11 +1,31 @@
 import { CalendarDays, Clock, Stethoscope, FileText } from "lucide-react";
 
+import { useNavigate } from "react-router-dom";
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+
 import { formatDateTime } from "@/utils/dateUtils";
 
+import paymentService from "@/services/paymentService";
+
 function AppointmentCard({ appointment, onCancel }) {
+  const navigate = useNavigate();
+  const handlePayment = async () => {
+    try {
+      await paymentService.payForAppointment(appointment.id);
+
+      navigate(`/patient/prescription/${appointment.id}`);
+    } catch (error) {
+      console.error(error);
+      alert(error.response?.data?.message || "Payment failed.");
+    }
+  };
+
+  const handleViewPrescription = () => {
+    navigate(`/patient/prescription/${appointment.id}`);
+  };
   return (
     <Card className="transition-shadow duration-300 hover:shadow-lg ">
       <CardContent className="space-y-6 p-6">
@@ -53,17 +73,37 @@ function AppointmentCard({ appointment, onCancel }) {
         </div>
 
         {/* Action Button */}
-        <div className="flex justify-end cursor-pointer">
-          <Button
-            variant="destructive"
-            disabled={
-              appointment.status === "CANCELLED" ||
-              appointment.status === "COMPLETED"
-            }
-            onClick={() => onCancel(appointment.id)}
-          >
-            Cancel Appointment
-          </Button>
+        <div className="flex justify-end gap-3">
+          {/* BOOKED */}
+          {appointment.status === "BOOKED" && (
+            <Button
+              variant="destructive"
+              onClick={() => onCancel(appointment.id)}
+            >
+              Cancel Appointment
+            </Button>
+          )}
+
+          {/* COMPLETED but payment pending */}
+          {appointment.status === "COMPLETED" &&
+            appointment.paymentStatus === "PENDING" && (
+              <Button onClick={handlePayment}>Pay & View Prescription</Button>
+            )}
+
+          {/* COMPLETED and payment done */}
+          {appointment.status === "COMPLETED" &&
+            appointment.paymentStatus === "PAID" && (
+              <Button onClick={handleViewPrescription}>
+                View Prescription
+              </Button>
+            )}
+
+          {/* CANCELLED */}
+          {appointment.status === "CANCELLED" && (
+            <Button variant="destructive" disabled>
+              Cancelled
+            </Button>
+          )}
         </div>
       </CardContent>
     </Card>
