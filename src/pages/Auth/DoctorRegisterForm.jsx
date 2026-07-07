@@ -28,7 +28,7 @@ function DoctorRegisterForm() {
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
-      name: "",
+      // name: "",
       email: "",
       password: "",
       doctorName: "",
@@ -82,7 +82,7 @@ function DoctorRegisterForm() {
               <div className="space-y-5">
                 {/* Full Name */}
 
-                <div>
+                {/* <div>
                   <Label htmlFor="name">Full Name</Label>
 
                   <Input
@@ -98,7 +98,7 @@ function DoctorRegisterForm() {
                       {errors.name.message}
                     </p>
                   )}
-                </div>
+                </div> */}
 
                 {/* Email */}
 

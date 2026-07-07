@@ -30,7 +30,7 @@ function PatientRegisterForm() {
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
-      name: "",
+      // name: "",
       email: "",
       password: "",
       patientName: "",
@@ -80,7 +80,7 @@ function PatientRegisterForm() {
               </h2>
 
               <div className="space-y-5">
-                <div>
+                {/* <div>
                   <Label>Full Name</Label>
 
                   <Input
@@ -95,7 +95,7 @@ function PatientRegisterForm() {
                       {errors.name.message}
                     </p>
                   )}
-                </div>
+                </div> */}
 
                 <div>
                   <Label>Email</Label>
