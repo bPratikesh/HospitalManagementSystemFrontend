@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 
 import authService from "@/services/authService";
 import { saveUser } from "@/utils/storage";
+import { showSuccess, showError } from "@/lib/toast";
 
 function Login() {
   const {
@@ -25,31 +26,28 @@ function Login() {
     },
   });
 
- const onSubmit = async (data) => {
-  try {
-    const response = await authService.login(data);
+  const onSubmit = async (data) => {
+    try {
+      const response = await authService.login(data);
 
-    console.log(response.data);
+      console.log(response.data);
 
-    saveUser(response.data);
+      saveUser(response.data);
 
-    alert("Login Successful!");
+      // alert("Login Successful!");
+      showSuccess("Login Successful!");
 
-    if (response.data.role === "DOCTOR") {
-      navigate("/doctor");
-    } else {
-      navigate("/patient");
+      if (response.data.role === "DOCTOR") {
+        navigate("/doctor");
+      } else {
+        navigate("/patient");
+      }
+    } catch (error) {
+      const message = error.response?.data?.message || "Login Failed";
+      showError(message);
+      //alert(message);
     }
-
-  } catch (error) {
-
-    const message =
-      error.response?.data?.message ||
-      "Login Failed";
-
-    alert(message);
-  }
-};
+  };
   const navigate = useNavigate();
   return (
     <>
@@ -59,13 +57,13 @@ function Login() {
         subtitle="to access your dashboard and manage appointments."
       />
 
-      <Card className="mx-auto w-full max-w-2xl shadow-lg">
+      <Card className="mx-auto w-full max-w-2xl shadow-lg mb-50">
         <CardHeader>
           <CardTitle className="text-center text-2xl">Login</CardTitle>
         </CardHeader>
 
         <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 ">
             {/* Email */}
 
             <div>

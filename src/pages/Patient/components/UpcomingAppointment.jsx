@@ -61,7 +61,7 @@ function UpcomingAppointment({ appointment }) {
           </div>
         </div>
 
-        <Button className="w-full">View Details</Button>
+        {/* <Button className="w-full">View Details</Button> */}
       </CardContent>
     </Card>
   );

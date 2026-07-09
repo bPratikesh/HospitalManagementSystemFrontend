@@ -37,7 +37,7 @@ function Register() {
         Already have an account?
         <button
           onClick={() => navigate("/login")}
-          className="ml-2 font-semibold text-blue-600 hover:underline"
+          className="ml-2 font-semibold text-blue-600 hover:underline pb-50"
         >
           Login
         </button>

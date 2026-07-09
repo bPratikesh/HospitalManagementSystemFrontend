@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import PrescriptionCard from "./components/PrescriptionCard";
+import { showError } from "@/lib/toast";
 
 import prescriptionService from "@/services/prescriptionService";
 
@@ -23,7 +24,8 @@ function PatientPrescription() {
       setPrescription(data);
     } catch (error) {
       console.error(error);
-      alert("Unable to fetch prescription.");
+      // alert("Unable to fetch prescription.");
+      showError("Unable to fetch prescription.");
     } finally {
       setLoading(false);
     }

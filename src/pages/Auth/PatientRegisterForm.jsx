@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { showSuccess, showError } from "@/lib/toast";
 
 import {
   Select,
@@ -46,13 +47,15 @@ function PatientRegisterForm() {
 
       console.log(response.data);
 
-      alert("Patient Registered Successfully!");
+      //alert("Patient Registered Successfully!");
+      showSuccess("Patient registration completed successfully.");
 
       navigate("/login");
     } catch (error) {
       const message = error.response?.data?.message || "Registration Failed";
 
-      alert(message);
+      //alert(message);
+      showError(message);
     }
   };
 
@@ -63,7 +66,7 @@ function PatientRegisterForm() {
         subtitle="Create your patient account."
       />
 
-      <Card className="mx-auto w-full max-w-2xl shadow-lg">
+      <Card className="mx-auto w-full max-w-2xl shadow-lg mb-50">
         <CardHeader>
           <CardTitle className="text-center text-2xl">
             Register as Patient
@@ -265,7 +268,11 @@ function PatientRegisterForm() {
               </div>
             </div>
 
-            <Button type="submit" className="w-full cursor-pointer" disabled={isSubmitting}>
+            <Button
+              type="submit"
+              className="w-full cursor-pointer"
+              disabled={isSubmitting}
+            >
               {isSubmitting ? "Registering..." : "Register"}
             </Button>
 

@@ -9,17 +9,46 @@ import { Button } from "@/components/ui/button";
 import { formatDateTime } from "@/utils/dateUtils";
 
 import paymentService from "@/services/paymentService";
+import { showError } from "@/lib/toast";
+import { useState } from "react";
+
+import PaymentProcessingDialog from "@/components/common/PaymentProcessingDialog";
 
 function AppointmentCard({ appointment, onCancel }) {
+  const [processingPayment, setProcessingPayment] = useState(false);
+
+  const [paymentMessage, setPaymentMessage] = useState(
+    "Verifying consultation payment...",
+  );
   const navigate = useNavigate();
   const handlePayment = async () => {
     try {
+      setProcessingPayment(true);
+
+      setPaymentMessage("Verifying consultation payment...");
+
+      // Little delay so user sees first message
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
       await paymentService.payForAppointment(appointment.id);
+
+      setPaymentMessage("Updating doctor wallet...");
+
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      setPaymentMessage("Unlocking digital prescription...");
+
+      await new Promise((resolve) => setTimeout(resolve, 2000));
 
       navigate(`/patient/prescription/${appointment.id}`);
     } catch (error) {
       console.error(error);
-      alert(error.response?.data?.message || "Payment failed.");
+
+      const message = error.response?.data?.message || "Payment failed.";
+
+      showError(message);
+    } finally {
+      setProcessingPayment(false);
     }
   };
 
@@ -106,6 +135,10 @@ function AppointmentCard({ appointment, onCancel }) {
           )}
         </div>
       </CardContent>
+      <PaymentProcessingDialog
+        open={processingPayment}
+        message={paymentMessage}
+      />
     </Card>
   );
 }

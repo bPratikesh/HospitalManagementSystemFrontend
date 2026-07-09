@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import PrescriptionForm from "./components/PrescriptionForm";
 
 import prescriptionService from "@/services/prescriptionService";
+import { showSuccess, showError } from "@/lib/toast";
 
 function PrescribePatient() {
   const { appointmentId } = useParams();
@@ -12,12 +13,14 @@ function PrescribePatient() {
     try {
       await prescriptionService.createPrescription(appointmentId, formData);
 
-      alert("Prescription submitted successfully.");
+      // alert("Prescription submitted successfully.");
+      showSuccess("Prescription submitted successfully.");
 
       navigate("/doctor/appointments");
     } catch (error) {
       console.error(error);
-      alert("Failed to submit prescription.");
+      // alert("Failed to submit prescription.");
+      showError("Failed to submit prescription.");
     }
   };
 

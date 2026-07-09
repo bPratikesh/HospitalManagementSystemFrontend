@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import appointmentService from "@/services/appointmentService";
 import { formatDate, formatTime } from "@/utils/dateUtils";
 import { useNavigate } from "react-router-dom";
+import { showError } from "@/lib/toast";
 
 function AppointmentCard({ appointment, onRefresh }) {
   const navigate = useNavigate();
@@ -15,7 +16,8 @@ function AppointmentCard({ appointment, onRefresh }) {
       onRefresh();
     } catch (error) {
       console.error(error);
-      alert("Failed to cancel appointment.");
+      // alert("Failed to cancel appointment.");
+      showError("Failed to cancel appointment.");
     }
   };
   const handlePrescribe = () => {

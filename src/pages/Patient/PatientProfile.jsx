@@ -4,6 +4,7 @@ import PatientProfileForm from "./components/PatientProfileForm";
 
 import patientService from "@/services/patientService";
 import { getUser, saveUser } from "@/utils/storage";
+import { showSuccess, showError } from "@/lib/toast";
 
 function PatientProfile() {
   const [patient, setPatient] = useState(null);
@@ -24,7 +25,8 @@ function PatientProfile() {
       setPatient(data);
     } catch (error) {
       console.error(error);
-      alert("Failed to load profile.");
+      //alert("Failed to load profile.");
+      showError("Failed to load profile.");
     } finally {
       setLoading(false);
     }
@@ -36,21 +38,22 @@ function PatientProfile() {
 
       await patientService.updatePatient(loggedInUser.patientId, formData);
 
-      // Update localStorage
       saveUser({
         ...loggedInUser,
         name: formData.patientName,
       });
 
-      alert("Profile updated successfully.");
+      showSuccess("Profile updated successfully.");
 
       fetchPatient();
 
-      // Refresh the page so Navbar & Dashboard re-read localStorage
-      window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      }, 400);
     } catch (error) {
       console.error(error);
-      alert("Failed to update profile.");
+
+      showError("Failed to update profile.");
     }
   };
 

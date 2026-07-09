@@ -4,6 +4,8 @@ import PrescriptionHistoryCard from "./components/PrescriptionHistoryCard";
 
 import prescriptionService from "@/services/prescriptionService";
 import { getUser } from "@/utils/storage";
+import { showError } from "@/lib/toast";
+
 
 function PatientAllPrescriptions() {
   const [prescriptions, setPrescriptions] = useState([]);
@@ -28,7 +30,8 @@ function PatientAllPrescriptions() {
     
     } catch (error) {
       console.error(error);
-      alert("Failed to fetch prescriptions.");
+      // alert("Failed to fetch prescriptions.");
+      showError("Failed to fetch prescriptions.");
     } finally {
       setLoading(false);
     }

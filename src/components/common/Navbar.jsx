@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
-import { Stethoscope, User } from "lucide-react";
+import { ArrowRight, Stethoscope, User, UserPlus } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -77,12 +77,30 @@ function Navbar() {
           </div>
         ) : (
           <div className="flex items-center gap-3">
-            <Link to="/login">
-              <Button variant="outline">Login</Button>
+            <Link to="/register">
+              <Button
+                size="lg"
+                className="group h-9 w-30 cursor-pointer rounded-xl bg-blue-600 px-8 text-base font-semibold text-white shadow-lg transition-all duration-300  hover:bg-blue-700 hover:shadow-2xl"
+              >
+                <UserPlus
+                  size={18}
+                  className="mr-2 transition-transform duration-300 group-hover:scale-110"
+                />
+                Register
+              </Button>
             </Link>
 
-            <Link to="/register">
-              <Button>Register</Button>
+            <Link to="/login">
+              <Button
+                size="lg"
+                className="group h-9 w-30 cursor-pointer rounded-xl border-2 border-blue-600 bg-white px-8 text-base font-semibold text-blue-600 shadow-md transition-all duration-300 hover:bg-blue-600 hover:text-white hover:shadow-2xl"
+              >
+                Sign In
+                <ArrowRight
+                  size={20}
+                  className="ml-2 transition-transform duration-300 group-hover:translate-x-1"
+                />
+              </Button>
             </Link>
           </div>
         )}

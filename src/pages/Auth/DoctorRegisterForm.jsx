@@ -9,6 +9,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import authService from "@/services/authService";
+import { showSuccess, showError } from "@/lib/toast";
 
 import {
   Select,
@@ -47,13 +48,16 @@ function DoctorRegisterForm() {
 
       console.log(response.data);
 
-      alert("Doctor Registered Successfully!");
+      // alert("Doctor Registered Successfully!");
+      showSuccess("Doctor registration completed successfully.");
 
       navigate("/login");
     } catch (error) {
+      const message = error.response?.data?.message || "Registration Failed";
       console.error(error);
 
-      alert(error.response?.data?.message || "Registration Failed");
+      //alert(message);
+      showError(message);
     }
   };
   return (
@@ -63,7 +67,7 @@ function DoctorRegisterForm() {
         subtitle="Join DocCare and start managing your patients efficiently."
       />
 
-      <Card className="mx-auto w-full max-w-2xl shadow-lg">
+      <Card className="mx-auto w-full max-w-2xl shadow-lg mb-50">
         <CardHeader>
           <CardTitle className="flex items-center justify-center gap-2 text-2xl">
             <FaUserDoctor className="text-blue-600" />

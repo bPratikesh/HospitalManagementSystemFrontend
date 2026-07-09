@@ -7,6 +7,8 @@ import { Textarea } from "@/components/ui/textarea";
 
 import appointmentService from "@/services/appointmentService";
 import { getUser } from "@/utils/storage";
+import { showSuccess, showError } from "@/lib/toast";
+
 
 function AppointmentForm({ doctorId }) {
   const navigate = useNavigate();
@@ -35,7 +37,8 @@ function AppointmentForm({ doctorId }) {
         appointmentData,
       );
 
-      alert("Appointment booked successfully!");
+      //alert("Appointment booked successfully!");
+      showSuccess("Appointment booked successfully.");
 
       reset();
 
@@ -46,7 +49,8 @@ function AppointmentForm({ doctorId }) {
       const message =
         error.response?.data?.message || "Failed to book appointment.";
 
-      alert(message);
+      //alert(message);
+      showError(message);
     }
   };
 

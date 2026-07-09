@@ -4,10 +4,14 @@ import { getUser } from "@/utils/storage";
 import appointmentService from "@/services/appointmentService";
 
 import AppointmentCard from "./components/AppointmentCard";
+import { showSuccess, showError } from "@/lib/toast";
+import ConfirmDialog from "./components/ConfirmDialog";
 
 function PatientAppointments() {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+  const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
 
   useEffect(() => {
     fetchAppointments();
@@ -28,23 +32,27 @@ function PatientAppointments() {
       setLoading(false);
     }
   };
-  const handleCancelAppointment = async (appointmentId) => {
-    const confirmCancel = window.confirm(
-      "Are you sure you want to cancel this appointment?",
-    );
-
-    if (!confirmCancel) return;
-
+  const handleCancelAppointment = (appointmentId) => {
+    setSelectedAppointmentId(appointmentId);
+    setOpenConfirmDialog(true);
+  };
+  const confirmCancellation = async () => {
     try {
-      await appointmentService.cancelAppointment(appointmentId);
+      await appointmentService.cancelAppointment(selectedAppointmentId);
 
-      alert("Appointment cancelled successfully.");
+      showSuccess("Appointment cancelled successfully.");
 
       fetchAppointments();
     } catch (error) {
       console.error(error);
 
-      alert(error.response?.data?.message || "Failed to cancel appointment.");
+      const message =
+        error.response?.data?.message || "Failed to cancel appointment.";
+
+      showError(message);
+    } finally {
+      setOpenConfirmDialog(false);
+      setSelectedAppointmentId(null);
     }
   };
 
@@ -75,6 +83,15 @@ function PatientAppointments() {
           ))}
         </div>
       )}
+      <ConfirmDialog
+        open={openConfirmDialog}
+        onOpenChange={setOpenConfirmDialog}
+        title="Cancel Appointment"
+        description="Are you sure you want to cancel this appointment? This action cannot be undone."
+        confirmText="Yes, Cancel"
+        cancelText="Keep Appointment"
+        onConfirm={confirmCancellation}
+      />
     </div>
   );
 }
