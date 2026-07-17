@@ -36,7 +36,7 @@ function PatientPrescription() {
   }
 
   return (
-    <div className="container py-10">
+    <div className=" py-2">
       <PrescriptionCard prescription={prescription} />
     </div>
   );

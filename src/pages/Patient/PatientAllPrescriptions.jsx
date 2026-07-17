@@ -6,7 +6,6 @@ import prescriptionService from "@/services/prescriptionService";
 import { getUser } from "@/utils/storage";
 import { showError } from "@/lib/toast";
 
-
 function PatientAllPrescriptions() {
   const [prescriptions, setPrescriptions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -27,7 +26,6 @@ function PatientAllPrescriptions() {
 
       console.log(data);
       setPrescriptions(data);
-    
     } catch (error) {
       console.error(error);
       // alert("Failed to fetch prescriptions.");
@@ -55,7 +53,7 @@ function PatientAllPrescriptions() {
   }
 
   return (
-    <div className="container space-y-6 py-10">
+    <div className="space-y-6 py-10">
       <h1 className="text-3xl font-bold">My Prescriptions</h1>
 
       {prescriptions.map((prescription) => (

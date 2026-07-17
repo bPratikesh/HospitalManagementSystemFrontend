@@ -14,9 +14,20 @@ const updateDoctor = async (doctorId, doctorData) => {
 
   return response.data;
 };
+const searchDoctors = async (name, speciality) => {
+  const response = await api.get("/doctor/search", {
+    params: {
+      name,
+      speciality,
+    },
+  });
+
+  return response.data;
+};
 
 export default {
   getDoctorById,
   getDoctorsForPatients,
   updateDoctor,
+  searchDoctors,
 };

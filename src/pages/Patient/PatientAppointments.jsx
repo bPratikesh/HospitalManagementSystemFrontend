@@ -67,7 +67,7 @@ function PatientAppointments() {
   }
 
   return (
-    <div className="container py-10">
+    <div className="py-2">
       <h1 className="mb-8 text-3xl font-bold">My Appointments</h1>
 
       {appointments.length === 0 ? (

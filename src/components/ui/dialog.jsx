@@ -48,6 +48,7 @@ function DialogContent({
   className,
   children,
   showCloseButton = true,
+  disableClose = false,
   ...props
 }) {
   return (
@@ -103,7 +104,7 @@ function DialogFooter({
       )}
       {...props}>
       {children}
-      {showCloseButton && (
+      {showCloseButton && !disableClose && (
         <DialogPrimitive.Close render={<Button variant="outline" />}>
           Close
         </DialogPrimitive.Close>

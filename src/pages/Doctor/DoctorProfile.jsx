@@ -61,7 +61,7 @@ function DoctorProfile() {
   }
 
   return (
-    <div className="container py-10">
+    <div className=" py-2">
       <DoctorProfileForm doctor={doctor} onSubmit={handleUpdate} />
     </div>
   );

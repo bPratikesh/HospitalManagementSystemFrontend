@@ -62,7 +62,7 @@ function PatientProfile() {
   }
 
   return (
-    <div className="container py-10">
+    <div className="py-2">
       <PatientProfileForm patient={patient} onSubmit={handleUpdate} />
     </div>
   );

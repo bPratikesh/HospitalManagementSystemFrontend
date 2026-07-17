@@ -25,7 +25,7 @@ function PrescribePatient() {
   };
 
   return (
-    <div className="container py-10">
+    <div className=" py-2">
       <h1 className="mb-8 text-3xl font-bold text-slate-800">
         Prescribe Patient
       </h1>
