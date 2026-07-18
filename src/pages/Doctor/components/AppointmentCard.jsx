@@ -4,9 +4,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 import appointmentService from "@/services/appointmentService";
-import { formatDate, formatTime } from "@/utils/dateUtils";
 import { useNavigate } from "react-router-dom";
 import { showError } from "@/lib/toast";
+import { formatDate } from "@/utils/dateUtils";
+import { formatSlot } from "@/utils/slotUtils";
 
 function AppointmentCard({ appointment, onRefresh }) {
   const navigate = useNavigate();
@@ -57,12 +58,12 @@ function AppointmentCard({ appointment, onRefresh }) {
         <div className="grid gap-4 md:grid-cols-2">
           <div className="flex items-center gap-3">
             <CalendarDays size={18} className="text-slate-500" />
-            <span>{formatDate(appointment.time)}</span>
+            <span>{formatDate(appointment.appointmentDate)}</span>
           </div>
 
           <div className="flex items-center gap-3">
             <Clock size={18} className="text-slate-500" />
-            <span>{formatTime(appointment.time)}</span>
+            <span>{formatSlot(appointment.appointmentSlot)}</span>
           </div>
 
           <div className="flex items-center gap-3">

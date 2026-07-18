@@ -7,12 +7,16 @@ function QuickActions({ actions }) {
     <section>
       <h2 className="mb-4 text-2xl font-bold text-slate-800">Quick Actions</h2>
 
-      <div className="grid gap-20 md:grid-cols-3">
+      <div className="flex flex-wrap justify-center gap-8">
         {actions.map((action) => {
           const Icon = action.icon;
 
           return (
-            <Link key={action.title} to={action.path} className="block w-100 ">
+            <Link
+              key={action.title}
+              to={action.path}
+              className="w-full max-w-sm"
+            >
               <Card className="min-h-20 cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
                 <CardContent className="flex flex-col items-center justify-center gap-4 p-8 text-center">
                   <div className="rounded-full bg-blue-100 p-4 text-blue-600">

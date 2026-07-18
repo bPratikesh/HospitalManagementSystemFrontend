@@ -6,7 +6,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-import { formatDateTime } from "@/utils/dateUtils";
+import { formatDate } from "@/utils/dateUtils";
+import { formatSlot } from "@/utils/slotUtils";
 
 import paymentService from "@/services/paymentService";
 import { showError } from "@/lib/toast";
@@ -79,13 +80,13 @@ function AppointmentCard({ appointment, onCancel }) {
           <div className="flex items-center gap-3">
             <CalendarDays size={18} className="text-blue-600" />
 
-            {formatDateTime(appointment.time)}
+            <span>{formatDate(appointment.appointmentDate)}</span>
           </div>
 
           <div className="flex items-center gap-3">
             <Clock size={18} className="text-green-600" />
 
-            <span>{appointment.status}</span>
+            <span>{formatSlot(appointment.appointmentSlot)}</span>
           </div>
         </div>
 

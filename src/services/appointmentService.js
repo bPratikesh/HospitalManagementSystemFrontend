@@ -31,6 +31,16 @@ const cancelAppointmentByDoctor = async (appointmentId) => {
   const response = await api.put(`/appointment/doctor/cancel/${appointmentId}`);
   return response.data;
 };
+const getSlotAvailability = async (doctorId, appointmentDate) => {
+  const response = await api.get("/appointment/slots", {
+    params: {
+      doctorId,
+      appointmentDate,
+    },
+  });
+
+  return response.data;
+};
 
 export default {
   createAppointment,
@@ -38,4 +48,5 @@ export default {
   cancelAppointment,
   getAppointmentsByDoctor,
   cancelAppointmentByDoctor,
+  getSlotAvailability,
 };

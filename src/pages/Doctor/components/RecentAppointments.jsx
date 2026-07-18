@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { formatDate, formatTime } from "@/utils/dateUtils";
+import { formatDate } from "@/utils/dateUtils";
+import { formatSlot } from "@/utils/slotUtils";
 
 function RecentAppointments({ appointments }) {
   return (
@@ -27,36 +28,38 @@ function RecentAppointments({ appointments }) {
               </thead>
 
               <tbody>
-                {appointments.map((appointment) => (
-                  <tr
-                    key={appointment.id}
-                    className="border-b last:border-none hover:bg-slate-50"
-                  >
-                    <td className="py-4 font-medium">
-                      {appointment.patient.user.name}
-                    </td>
+                {appointments
+                  .slice(0, 5)
+                  .map((appointment) => (
+                    <tr
+                      key={appointment.id}
+                      className="border-b last:border-none hover:bg-slate-50"
+                    >
+                      <td className="py-4 font-medium">
+                        {appointment.patient.user.name}
+                      </td>
 
-                    <td>{appointment.symptoms}</td>
+                      <td>{appointment.symptoms}</td>
 
-                    <td>{formatDate(appointment.time)}</td>
+                      <td>{formatDate(appointment.appointmentDate)}</td>
 
-                    <td>{formatTime(appointment.time)}</td>
+                      <td>{formatSlot(appointment.appointmentSlot)}</td>
 
-                    <td>
-                      <span
-                        className={`rounded-full px-3 py-1 text-xs font-semibold ${
-                          appointment.status === "BOOKED"
-                            ? "bg-blue-100 text-blue-700"
-                            : appointment.status === "COMPLETED"
-                              ? "bg-green-100 text-green-700"
-                              : "bg-red-100 text-red-700"
-                        }`}
-                      >
-                        {appointment.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
+                      <td>
+                        <span
+                          className={`rounded-full px-3 py-1 text-xs font-semibold ${
+                            appointment.status === "BOOKED"
+                              ? "bg-blue-100 text-blue-700"
+                              : appointment.status === "COMPLETED"
+                                ? "bg-green-100 text-green-700"
+                                : "bg-red-100 text-red-700"
+                          }`}
+                        >
+                          {appointment.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           </div>

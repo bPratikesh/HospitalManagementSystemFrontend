@@ -1,9 +1,12 @@
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+
+import AppointmentSlotCard from "./AppointmentSlotCard";
 
 import appointmentService from "@/services/appointmentService";
 import { getUser } from "@/utils/storage";
@@ -12,6 +15,11 @@ import { showSuccess, showError } from "@/lib/toast";
 function AppointmentForm({ doctorId }) {
   const navigate = useNavigate();
 
+  const [appointmentDate, setAppointmentDate] = useState("");
+  const [slots, setSlots] = useState([]);
+  const [selectedSlot, setSelectedSlot] = useState("");
+  const [loadingSlots, setLoadingSlots] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -19,46 +27,55 @@ function AppointmentForm({ doctorId }) {
     reset,
   } = useForm();
 
-  // Disable previous dates
   const today = new Date().toISOString().split("T")[0];
 
-  // Generate slots from 6 AM to 11:30 PM
-  const generateTimeSlots = () => {
-    const slots = [];
-
-    for (let hour = 6; hour <= 23; hour++) {
-      for (let minute = 0; minute < 60; minute += 30) {
-        if (hour === 23 && minute > 30) break;
-
-        const value = `${String(hour).padStart(2, "0")}:${String(
-          minute,
-        ).padStart(2, "0")}`;
-
-        const display = new Date(`2000-01-01T${value}`).toLocaleTimeString([], {
-          hour: "numeric",
-          minute: "2-digit",
-          hour12: true,
-        });
-
-        slots.push({
-          value,
-          display,
-        });
-      }
+  useEffect(() => {
+    if (!appointmentDate) {
+      setSlots([]);
+      setSelectedSlot("");
+      return;
     }
 
-    return slots;
+    fetchSlots();
+  }, [appointmentDate]);
+
+  const fetchSlots = async () => {
+    try {
+      setLoadingSlots(true);
+
+      const data = await appointmentService.getSlotAvailability(
+        doctorId,
+        appointmentDate,
+      );
+
+      setSlots(data);
+      setSelectedSlot("");
+    } catch (error) {
+      console.error(error);
+      showError("Failed to load appointment slots.");
+    } finally {
+      setLoadingSlots(false);
+    }
   };
 
-  const timeSlots = generateTimeSlots();
-
   const onSubmit = async (data) => {
+    if (!appointmentDate) {
+      showError("Please select appointment date.");
+      return;
+    }
+
+    if (!selectedSlot) {
+      showError("Please select an appointment slot.");
+      return;
+    }
+
     try {
       const loggedInUser = getUser();
 
       const appointmentData = {
         symptoms: data.symptoms,
-        time: `${data.date}T${data.time}:00`,
+        appointmentDate,
+        appointmentSlot: selectedSlot,
       };
 
       await appointmentService.createAppointment(
@@ -70,6 +87,10 @@ function AppointmentForm({ doctorId }) {
       showSuccess("Appointment booked successfully.");
 
       reset();
+
+      setAppointmentDate("");
+      setSlots([]);
+      setSelectedSlot("");
 
       navigate("/patient/appointments");
     } catch (error) {
@@ -83,7 +104,7 @@ function AppointmentForm({ doctorId }) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 ">
       {/* Symptoms */}
 
       <div>
@@ -110,40 +131,43 @@ function AppointmentForm({ doctorId }) {
         <Input
           type="date"
           min={today}
-          {...register("date", {
-            required: "Appointment date is required",
-          })}
+          value={appointmentDate}
+          onChange={(e) => setAppointmentDate(e.target.value)}
         />
-
-        {errors.date && (
-          <p className="mt-1 text-sm text-red-500">{errors.date.message}</p>
-        )}
       </div>
 
-      {/* Appointment Time */}
+      {/* Slots */}
 
-      <div>
-        <label className="mb-2 block font-medium">Appointment Time</label>
+      {appointmentDate && (
+        <div className="space-y-5">
+          <div>
+            <h3 className="text-lg font-semibold">
+              Available Appointment Slots
+            </h3>
 
-        <select
-          className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
-          {...register("time", {
-            required: "Appointment time is required",
-          })}
-        >
-          <option value="">Select Time</option>
+            <p className="text-sm text-slate-500">
+              Select one available consultation slot.
+            </p>
+          </div>
 
-          {timeSlots.map((slot) => (
-            <option key={slot.value} value={slot.value}>
-              {slot.display}
-            </option>
-          ))}
-        </select>
-
-        {errors.time && (
-          <p className="mt-1 text-sm text-red-500">{errors.time.message}</p>
-        )}
-      </div>
+          {loadingSlots ? (
+            <div className="rounded-lg border py-10 text-center text-slate-500">
+              Loading available slots...
+            </div>
+          ) : (
+            <div className="grid gap-5 md:grid-cols-2">
+              {slots.map((slot) => (
+                <AppointmentSlotCard
+                  key={slot.slot}
+                  slot={slot}
+                  selected={selectedSlot === slot.slot}
+                  onSelect={setSelectedSlot}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       <Button type="submit" className="w-full" disabled={isSubmitting}>
         {isSubmitting ? "Booking..." : "Book Appointment"}

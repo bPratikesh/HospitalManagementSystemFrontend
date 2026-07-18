@@ -1,8 +1,8 @@
 import { CalendarDays, Clock, UserRound } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { formatDate, formatTime } from "@/utils/dateUtils";
+import { formatDate } from "@/utils/dateUtils";
+import { formatSlot } from "@/utils/slotUtils";
 
 function UpcomingAppointment({ appointment }) {
   if (!appointment) {
@@ -43,13 +43,13 @@ function UpcomingAppointment({ appointment }) {
           <div className="flex items-center gap-3">
             <CalendarDays size={18} className="text-slate-500" />
 
-            <span>{formatDate(appointment.time)}</span>
+            <span>{formatDate(appointment.appointmentDate)}</span>
           </div>
 
           <div className="flex items-center gap-3">
             <Clock size={18} className="text-slate-500" />
 
-            <span>{formatTime(appointment.time)}</span>
+            <span>{formatSlot(appointment.appointmentSlot)}</span>
           </div>
 
           <div className="flex items-center gap-3">

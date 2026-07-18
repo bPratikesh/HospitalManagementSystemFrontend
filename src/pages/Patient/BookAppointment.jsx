@@ -7,7 +7,7 @@ function BookAppointment() {
   const { doctorId } = useParams();
 
   return (
-    <div className="container max-w-2xl py-10">
+    <div className="container max-w-3xl py-10">
       <Card>
         <CardContent className="space-y-6 p-8">
           <div>

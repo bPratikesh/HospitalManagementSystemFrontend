@@ -24,10 +24,15 @@ const searchDoctors = async (name, speciality) => {
 
   return response.data;
 };
+const getDashboard = async (doctorId) => {
+  const response = await api.get(`/doctor/${doctorId}/dashboard`);
+  return response.data;
+};
 
 export default {
   getDoctorById,
   getDoctorsForPatients,
   updateDoctor,
   searchDoctors,
+  getDashboard,
 };

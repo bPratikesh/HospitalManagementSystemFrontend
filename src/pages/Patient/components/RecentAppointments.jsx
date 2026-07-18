@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { formatDateTime } from "@/utils/dateUtils";
+import { formatDate } from "@/utils/dateUtils";
+import { formatSlot } from "@/utils/slotUtils";
 
 function RecentAppointments({ appointments }) {
   if (appointments.length === 0) {
@@ -29,13 +30,13 @@ function RecentAppointments({ appointments }) {
               <tr>
                 <th className="py-3">Doctor</th>
                 <th className="py-3">Specialization</th>
-                <th className="py-3">Date & Time</th>
+                <th className="py-3">Appointment Schedule</th>
                 <th className="py-3">Status</th>
               </tr>
             </thead>
 
             <tbody>
-              {appointments.map((appointment) => (
+              {appointments.slice(0, 5).map((appointment) => (
                 <tr
                   key={appointment.id}
                   className="border-b last:border-none hover:bg-slate-50"
@@ -46,7 +47,15 @@ function RecentAppointments({ appointments }) {
 
                   <td>{appointment.doctor.speciality}</td>
 
-                  <td>{formatDateTime(appointment.time)}</td>
+                  <td>
+                    <div className="flex flex-col">
+                      <span>{formatDate(appointment.appointmentDate)}</span>
+
+                      <span className="text-xs text-slate-500">
+                        {formatSlot(appointment.appointmentSlot)}
+                      </span>
+                    </div>
+                  </td>
 
                   <td>
                     <span
