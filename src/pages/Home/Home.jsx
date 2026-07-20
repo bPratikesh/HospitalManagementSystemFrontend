@@ -2,7 +2,6 @@ import CTASection from "./components/CTASection";
 import HeroSection from "./components/HeroSection";
 import HowItWorks from "./components/HowItWorks";
 import WhyChooseUs from "./components/WhyChooseUs";
-import { showSuccess } from "@/lib/toast";
 
 function Home() {
   return (

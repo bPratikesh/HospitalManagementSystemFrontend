@@ -1,4 +1,4 @@
-import { CalendarDays, User, Wallet } from "lucide-react";
+import { CalendarDays, User, MessageCircle } from "lucide-react";
 
 const quickActions = [
   {
@@ -6,6 +6,12 @@ const quickActions = [
     description: "Manage all appointments",
     icon: CalendarDays,
     path: "/doctor/appointments",
+  },
+  {
+    title: "Reviews",
+    description: "View patient feedback",
+    icon: MessageCircle,
+    path: "/doctor/reviews",
   },
   {
     title: "My Profile",

@@ -11,12 +11,36 @@ import { formatSlot } from "@/utils/slotUtils";
 
 import paymentService from "@/services/paymentService";
 import { showError } from "@/lib/toast";
-import { useState } from "react";
 
 import PaymentProcessingDialog from "@/components/common/PaymentProcessingDialog";
 
+import { useEffect, useState } from "react";
+import doctorReviewService from "@/services/doctorReviewService";
+
 function AppointmentCard({ appointment, onCancel }) {
   const [processingPayment, setProcessingPayment] = useState(false);
+  const [reviewed, setReviewed] = useState(false);
+  useEffect(() => {
+    checkReviewStatus();
+  }, []);
+
+  const checkReviewStatus = async () => {
+    try {
+      if (
+        appointment.status === "COMPLETED" &&
+        appointment.paymentStatus === "PAID"
+      ) {
+        const response = await doctorReviewService.hasReviewed(appointment.id);
+
+        setReviewed(response);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const handleRateDoctor = () => {
+    navigate(`/patient/review/${appointment.id}`);
+  };
 
   const [paymentMessage, setPaymentMessage] = useState(
     "Verifying consultation payment...",
@@ -123,9 +147,19 @@ function AppointmentCard({ appointment, onCancel }) {
           {/* COMPLETED and payment done */}
           {appointment.status === "COMPLETED" &&
             appointment.paymentStatus === "PAID" && (
-              <Button onClick={handleViewPrescription}>
-                View Prescription
-              </Button>
+              <>
+                <Button onClick={handleViewPrescription}>
+                  View Prescription
+                </Button>
+
+                {reviewed ? (
+                  <Button variant="secondary" disabled>
+                    Reviewed
+                  </Button>
+                ) : (
+                  <Button onClick={handleRateDoctor}>⭐ Rate Doctor</Button>
+                )}
+              </>
             )}
 
           {/* CANCELLED */}
